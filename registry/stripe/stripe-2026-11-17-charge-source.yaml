@@ -1,0 +1,14 @@
+id: stripe-2026-11-17-charge-source
+vendor: stripe
+type: removed_param
+affects:
+  sdk: stripe-python
+  module: stripe
+  symbol: Charge.create
+  param: source
+  replacement_param: payment_method
+effective: "2026-12-01"
+source_url: https://stripe.com/docs/upgrades
+recipe: rename_keyword
+migration_note: Use 'payment_method' instead of 'source'.
+review: {status: reviewed, by: owner, date: "2026-11-17"}

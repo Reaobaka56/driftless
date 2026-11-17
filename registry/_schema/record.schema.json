@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["id", "vendor", "type", "affects", "effective", "source_url", "migration_note", "review"],
+  "properties": {
+    "id": {"type": "string"},
+    "vendor": {"type": "string"},
+    "type": {"enum": ["removed_param", "renamed", "behaviour_change", "deprecation"]},
+    "affects": {"type": "object", "required": ["sdk", "symbol"]},
+    "effective": {"type": "string"},
+    "source_url": {"type": "string"},
+    "recipe": {"type": ["string", "null"]},
+    "migration_note": {"type": "string"},
+    "review": {"type": "object", "required": ["status", "by", "date"]}
+  }
+}

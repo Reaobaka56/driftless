@@ -1,0 +1,7 @@
+{
+  "name": "driftless-ts-scanner",
+  "private": true,
+  "type": "module",
+  "description": "Parses TS/JS with the TypeScript Compiler API. Never executes scanned code.",
+  "dependencies": { "typescript": "^5.4.0" }
+}
