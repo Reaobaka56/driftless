@@ -29,3 +29,5 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
     </main>
   );
 }
+
+// Next.js 15: searchParams is asynchronous and must be awaited.
