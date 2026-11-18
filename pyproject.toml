@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "driftless"
+version = "0.1.0"
+description = "Self-maintaining API integrations"
+requires-python = ">=3.11"
+dependencies = ["typer>=0.12", "pydantic>=2.0", "jsonschema", "pyyaml", "libcst", "pathspec>=0.12"]
+
+[project.optional-dependencies]
+worker = ["redis", "rq", "psycopg[binary]", "fastapi", "uvicorn"]
+dev = ["pytest", "ruff", "mypy", "types-PyYAML", "locust"]
+
+[project.scripts]
+driftless = "driftless.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+driftless = ["scanners/ts/scan.mjs", "scanners/ts/package.json"]
+
+[tool.ruff]
+line-length = 110
+extend-exclude = ["tests/fixtures"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "BLE", "PLW1510"]
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["typer.Argument", "driftless.llm.chain.LLMPolicy", "driftless.pipeline.ScanConfig"]
+
+[tool.mypy]
+ignore_missing_imports = true
+explicit_package_bases = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["tests/fixtures", "tests/load", "node_modules"]
+pythonpath = ["."]
