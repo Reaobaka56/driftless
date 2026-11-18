@@ -16,10 +16,11 @@ export default async function Dashboard({ searchParams }: DashboardProps) {
   const rate = rows.length ? ((done / rows.length) * 100).toFixed(1) : '0.0';
 
   return (
-    <main>
+    <main className="dash">
       <h1>Driftless Dashboard</h1>
-      <p>Accepted-PR rate: {rate}%</p>
-      <ul>
+      <p className="dash__stat">Accepted-PR rate: {rate}%</p>
+      {rows.length === 0 && <p className="dash__empty">No fix attempts recorded for this repository yet.</p>}
+      <ul className="dash__list">
         {rows.map((a) => (
           <li key={a.id}>
             {a.record_id} - {a.status} {a.pr_url && <a href={a.pr_url}>View PR</a>}
