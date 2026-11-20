@@ -1,5 +1,9 @@
 import type { Metadata, Viewport } from 'next';
-import '@fontsource-variable/inter';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '@fontsource/ibm-plex-sans-condensed/latin-500.css';
+import '@fontsource/ibm-plex-sans-condensed/latin-600.css';
 import '@fontsource-variable/jetbrains-mono';
 import './globals.css';
 
@@ -10,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#050607',
+  themeColor: '#08090b',
   width: 'device-width',
   initialScale: 1,
 };

@@ -1,18 +1,19 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { GitHubIcon, Logo } from './Logo';
-
-export const REPO_URL = 'https://github.com/Reaobaka56/driftless';
+import { Logo } from './Logo';
 
 const LINKS = [
   { id: 'process', label: 'How it works' },
-  { id: 'principles', label: 'Principles' },
+  { id: 'limits', label: 'Guarantees' },
   { id: 'status', label: 'Status' },
+  { id: 'run', label: 'Run it' },
 ];
 
+/** Floating site bar: the one place glass is used on the landing page. */
 export function Nav() {
-  const [active, setActive] = useState<string>('');
+  const [active, setActive] = useState('');
 
   useEffect(() => {
     const els = LINKS.map((l) => document.getElementById(l.id)).filter((e): e is HTMLElement => !!e);
@@ -28,7 +29,7 @@ export function Nav() {
 
   return (
     <header className="nav glass">
-      <div className="nav__inner">
+      <div className="container nav__inner">
         <a className="brand" href="#top" aria-label="Driftless, back to top">
           <Logo />
           Driftless
@@ -40,11 +41,9 @@ export function Nav() {
             </a>
           ))}
         </nav>
-        <a className="btn btn--primary" href={REPO_URL} target="_blank" rel="noopener noreferrer">
-          <GitHubIcon />
-          GitHub
-          <span className="visually-hidden"> (opens in a new tab)</span>
-        </a>
+        <Link className="btn btn--primary btn--sm nav__cta" href="/dashboard">
+          Open dashboard
+        </Link>
       </div>
     </header>
   );
