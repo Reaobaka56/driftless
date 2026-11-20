@@ -1,1 +1,4 @@
-.[worker]
+# Editable on purpose: the TypeScript scanner runs scan.mjs from the source tree,
+# and its npm dependency (installed in the build step) lives next to it. A
+# regular install copies scan.mjs into site-packages, where that dependency is absent.
+-e .[worker]

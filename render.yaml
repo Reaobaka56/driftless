@@ -1,29 +1,39 @@
+# Render Blueprint: API, scan workers, queue and database.
+# Python is pinned by .python-version (Render's default is newer than the tested one).
+# Plan IDs follow the current Blueprint spec; check the price of each in the dashboard before applying.
 services:
   - type: web
     name: driftless-api
     runtime: python
     buildCommand: pip install -r requirements.txt
+    # Applies pending SQL migrations before the new version starts receiving traffic.
+    preDeployCommand: python -m worker.migrate
     startCommand: uvicorn server.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
         fromDatabase: {name: driftless-db, property: connectionString}
       - key: REDIS_URL
-        fromService: {type: redis, name: driftless-redis, property: connectionString}
+        fromService: {type: keyvalue, name: driftless-redis, property: connectionString}
+
   - type: worker
     name: driftless-worker
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    # The worker runs the TypeScript scanner, so it also needs node_modules next to scan.mjs.
+    buildCommand: pip install -r requirements.txt && npm ci --prefix src/driftless/scanners/ts
     startCommand: rq worker stripe twilio default --url $REDIS_URL
     numInstances: 2
     envVars:
       - key: DATABASE_URL
         fromDatabase: {name: driftless-db, property: connectionString}
       - key: REDIS_URL
-        fromService: {type: redis, name: driftless-redis, property: connectionString}
-  - type: redis
+        fromService: {type: keyvalue, name: driftless-redis, property: connectionString}
+
+  - type: keyvalue
     name: driftless-redis
-    plan: starter
-    ipAllowList: []
+    # No plan set: Render's default for a new Key Value instance (256 MB).
+    ipAllowList: [] # internal connections only
+
 databases:
   - name: driftless-db
-    plan: basic-1gb
+    plan: 0.5c-1g
