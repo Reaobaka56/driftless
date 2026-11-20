@@ -1,11 +1,10 @@
-import os
-
 import redis
 from rq import Queue, Retry
 
+from worker.env import require_env
 from worker.ids import repo_hash
 
-redis_conn = redis.from_url(os.environ["REDIS_URL"])
+redis_conn = redis.from_url(require_env("REDIS_URL"))
 HOT_VENDORS = ("stripe", "twilio")
 queues = {v: Queue(v, connection=redis_conn) for v in HOT_VENDORS}
 queues["default"] = Queue("default", connection=redis_conn)
